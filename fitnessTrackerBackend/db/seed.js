@@ -1,8 +1,7 @@
 const client = require('./client');
 const {createUser,getUserByUsername,getUser,getUserById} = require('./adapters/users');
 const {createRoutine} = require('./adapters/routines');
-const {createActivity} = require('./adapters/activities');
-console.log("console log of getUserById",getUserById)
+const {createActivity,getActivityById,getAllActivities,updateActivity} = require('./adapters/activities');
 const{
     users,
     activities,
@@ -75,12 +74,16 @@ async function populateTables(){
             const userValidation = await getUser({username:user.username,password:12345});
             console.log("user validation for getUser: ", userValidation); 
         }
-        const getUserId = await getUserById(1);
-        console.log("getUserById (1): ",getUserId);
+        console.log("getUserById (1): ",await getUserById(1));
         for (const activity of activities){
             const createdActivity = await createActivity(activity);
             console.log("Activity being created: ", createdActivity);
         }
+        console.log("getActivityById(2): ", await getActivityById(2));
+        console.log("getAllActivities: ", await getAllActivities());
+        const updatedActivity = await updateActivity(3,"skating","you skate the board");
+        console.log("updated activity: ", updatedActivity);
+        console.log("getAllActivities: ", await getAllActivities());
         for (const routine of routines){
             const createdRoutine = await createRoutine(routine);
             console.log("Routine being created: ", createdRoutine);
