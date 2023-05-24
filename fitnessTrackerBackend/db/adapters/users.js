@@ -42,11 +42,29 @@ async function getUser({username,password}){
     try {
         const user = await getUserByUsername(username);
         const validPassword = await bcrypt.compare(password.toString(),user.password)
-        return validPassword;
+        if (validPassword){
+            delete user.password;
+            return user;
+        }
+        return;
     } catch (error) {
         console.error('Error getting user');
         throw error;
     }
 }
 
-module.exports = {createUser,getUserByUsername,getUser};
+async function getUserById(id){
+    try {
+        const {rows:[user]} = await client.query(`
+            SELECT username
+            FROM users
+            WHERE id=$1
+        `,[id]);
+        return user;
+    } catch (error) {
+        console.error('Error getting user by id');
+        throw error;
+    }
+}
+
+module.exports = {createUser,getUserByUsername,getUser,getUserById};
