@@ -1,5 +1,5 @@
 const client = require('./client');
-const {createUser} = require('./adapters/users');
+const {createUser,getUserByUsername,getUser} = require('./adapters/users');
 const {createRoutine} = require('./adapters/routines');
 const {createActivity} = require('./adapters/activities');
 const{
@@ -71,6 +71,8 @@ async function populateTables(){
         for (const user of users){
             const createdUser = await createUser(user);
             console.log("User being created: ", createdUser);
+            const userValidation = await getUser({username:user.username,password:12345});
+            console.log("user validation for getUser: ", userValidation);
         }
         for (const activity of activities){
             const createdActivity = await createActivity(activity);
