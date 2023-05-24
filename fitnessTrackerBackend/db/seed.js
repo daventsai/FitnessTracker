@@ -1,4 +1,5 @@
-const client = require("./client");
+const client = require('./client');
+const {createUser} = require('./adapters/users');
 const{
     users,
     activities,
@@ -65,7 +66,11 @@ async function populateTables(){
     //Seed tables w/ dummy data from seedData.js
     try{
         console.log("Starting to populate tables...");
-
+        for (const user of users){
+            const createdUser = await createUser(user);
+            console.log("User being created: ", createdUser);
+        }
+        
         console.log("Finished populating tables");
     }
     catch(error){
