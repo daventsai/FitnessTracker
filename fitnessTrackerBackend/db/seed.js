@@ -16,6 +16,7 @@ async function dropTables(){
             DROP TABLE IF EXISTS routines;
             DROP TABLE IF EXISTS users;
         `);
+        console.log("Finished dropping tables");
     } catch (error) {
         console.error("Error dropping tables");
         throw error;
@@ -47,11 +48,12 @@ async function createTables(){
             CREATE TABLE routine_activities(
                 id SERIAL PRIMARY KEY,
                 routine_id INTEGER REFERENCES routines(id),
-                activity_id INTEGERY REFERENCES activities(id),
+                activity_id INTEGER REFERENCES activities(id),
                 count INTEGER,
                 duration INTEGER
             );
         `);
+        console.log("Finished creating tables");
     } catch (error) {
         console.error("Error creating tables");
         throw error;
@@ -64,7 +66,7 @@ async function populateTables(){
     try{
         console.log("Starting to populate tables...");
 
-
+        console.log("Finished populating tables");
     }
     catch(error){
         console.error("Error populating tables");

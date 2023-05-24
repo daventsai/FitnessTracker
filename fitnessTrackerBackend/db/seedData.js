@@ -1,5 +1,5 @@
 //dummy data
-const users = [];
+const users = [{username: 'test', password:12345}];
 const activities = [];
 const routines = [];
 const routine_activities = [];
