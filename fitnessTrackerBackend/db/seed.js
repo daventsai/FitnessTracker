@@ -1,7 +1,7 @@
 const client = require('./client');
 const {createUser,getUserByUsername,getUser,getUserById} = require('./adapters/users');
-const {createRoutine,getRoutineById} = require('./adapters/routines');
 const {createActivity,getActivityById,getAllActivities,updateActivity} = require('./adapters/activities');
+const {createRoutine,getRoutineById,getRoutinesWithoutActivities,getAllRoutines} = require('./adapters/routines');
 const{addActivityToRoutine} = require('./adapters/routine_activities');
 const{
     users,
@@ -94,8 +94,9 @@ async function populateTables(){
             console.log("Routine_Activies being created: ", createdRoutineActivity);
         }
 
-
         console.log("Getting Routine by Id(2): ",await getRoutineById(2));
+        console.log("Getting all Routines without activity info: ", await getRoutinesWithoutActivities());
+        console.log("Getting all Routines with their activities", await getAllRoutines())
         
         console.log("Finished populating tables");
     }
