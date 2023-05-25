@@ -180,10 +180,72 @@ async function getPublicRoutinesByUser(username){
 
         return routine;
     } catch (error) {
-        console.error('Error getting all public routines');
+        console.error('Error getting all public routines by username');
         throw error;
     }
 }
 
+async function getPublicRoutinesByActivity(activityId){
+    try {
+        const {rows:routine} = await client.query(`
+        SELECT
+            routines.id as id,
+            routines.creator_id as creator_id,
+            routines.is_public as is_public,
+            routines.name as name,
+            routines.goal as goal,
+        CASE WHEN routine_activities.routine_id IS NULL THEN '[]'::json
+        ELSE
+        JSON_AGG(
+            JSON_BUILD_OBJECT(
+            'id', activities.id,
+            'name', activities.name,
+        'description', activities.description
+            )
+        ) END AS activities
+        FROM routines
+        LEFT JOIN routine_activities ON routines.id = routine_activities.routine_id
+        LEFT JOIN activities ON routine_activities.activity_id = activities.id
+        WHERE activities.id= $1 AND routines.is_public = true
+        GROUP BY routines.id, routine_activities.routine_id;
+        `,[activityId]);
+
+        return routine;
+    } catch (error) {
+        console.error('Error getting all public routines by activity');
+        throw error;
+    }
+}
+
+async function updateRoutine(routineId, is_public, name, goal){
+    const setString = Object.keys({is_public,name,goal}).map((key,index)=>`"${key}"=$${index+1}`).join(', ');
+    if (setString.length === 0){
+        return;
+    }
+    try {
+        const {rows:[routine]} = await client.query(`
+            UPDATE routines
+            SET ${setString}
+            WHERE id=${routineId}
+            RETURNING *;
+        `,Object.values({is_public,name,goal}));
+        return routine;
+    } catch (error) {
+        console.error('Error updating routines');
+        throw error;
+    }
+}
+
+async function destroyRoutine(routine_id){
+    try {
+        
+
+    } catch (error) {
+        console.error('Error destroying routines and related activities');
+        throw error;
+    }
+    
+}
+
 module.exports = {createRoutine,getRoutineById,getRoutinesWithoutActivities,getAllRoutines, getAllPublicRoutines,getAllRoutinesByUser,
-    getPublicRoutinesByUser};
+    getPublicRoutinesByUser,getPublicRoutinesByActivity,updateRoutine,destroyRoutine};

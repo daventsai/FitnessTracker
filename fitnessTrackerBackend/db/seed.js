@@ -2,7 +2,7 @@ const client = require('./client');
 const {createUser,getUserByUsername,getUser,getUserById} = require('./adapters/users');
 const {createActivity,getActivityById,getAllActivities,updateActivity} = require('./adapters/activities');
 const {createRoutine,getRoutineById,getRoutinesWithoutActivities,getAllRoutines,getAllPublicRoutines,
-    getAllRoutinesByUser,getPublicRoutinesByUser} = require('./adapters/routines');
+    getAllRoutinesByUser,getPublicRoutinesByUser,getPublicRoutinesByActivity,updateRoutine,destroyRoutine} = require('./adapters/routines');
 const{addActivityToRoutine} = require('./adapters/routine_activities');
 const{
     users,
@@ -102,7 +102,14 @@ async function populateTables(){
         console.log("Getting all Routines by Username", await getAllRoutinesByUser("test2"));
         console.log("Getting public Routines by Username", await getPublicRoutinesByUser("test2"));
         console.log("Getting public Routines by Username", await getPublicRoutinesByUser("test"));
-        
+        console.log("Getting public Routines by Activity", await getPublicRoutinesByActivity(2));
+        console.log("Updating routine(2): ", await updateRoutine(2,true,"new Routine Name3","goal3"));
+        console.log("Re-getting Activities: ", await getAllActivities());
+        console.log("Re-getting Routines: ", await getAllRoutines());
+        await destroyRoutine(2);
+        console.log("Re-re-getting Activities: ", await getAllActivities());
+        console.log("Re-re-getting Routines: ", await getAllRoutines());
+
         console.log("Finished populating tables");
     }
     catch(error){
