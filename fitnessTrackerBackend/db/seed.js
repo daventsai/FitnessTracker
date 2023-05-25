@@ -1,7 +1,8 @@
 const client = require('./client');
 const {createUser,getUserByUsername,getUser,getUserById} = require('./adapters/users');
 const {createActivity,getActivityById,getAllActivities,updateActivity} = require('./adapters/activities');
-const {createRoutine,getRoutineById,getRoutinesWithoutActivities,getAllRoutines} = require('./adapters/routines');
+const {createRoutine,getRoutineById,getRoutinesWithoutActivities,getAllRoutines,getAllPublicRoutines,
+    getAllRoutinesByUser,getPublicRoutinesByUser} = require('./adapters/routines');
 const{addActivityToRoutine} = require('./adapters/routine_activities');
 const{
     users,
@@ -96,7 +97,11 @@ async function populateTables(){
 
         console.log("Getting Routine by Id(2): ",await getRoutineById(2));
         console.log("Getting all Routines without activity info: ", await getRoutinesWithoutActivities());
-        console.log("Getting all Routines with their activities", await getAllRoutines())
+        console.log("Getting all Routines with their activities", await getAllRoutines());
+        console.log("Getting all public Routines with their activities", await getAllPublicRoutines());
+        console.log("Getting all Routines by Username", await getAllRoutinesByUser("test2"));
+        console.log("Getting public Routines by Username", await getPublicRoutinesByUser("test2"));
+        console.log("Getting public Routines by Username", await getPublicRoutinesByUser("test"));
         
         console.log("Finished populating tables");
     }
