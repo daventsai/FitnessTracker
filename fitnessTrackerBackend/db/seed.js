@@ -104,10 +104,8 @@ async function populateTables(){
         console.log("Getting public Routines by Username", await getPublicRoutinesByUser("test"));
         console.log("Getting public Routines by Activity", await getPublicRoutinesByActivity(2));
         console.log("Updating routine(2): ", await updateRoutine(2,true,"new Routine Name3","goal3"));
-        console.log("Re-getting Activities: ", await getAllActivities());
         console.log("Re-getting Routines: ", await getAllRoutines());
         await destroyRoutine(2);
-        console.log("Re-re-getting Activities: ", await getAllActivities());
         console.log("Re-re-getting Routines: ", await getAllRoutines());
 
         console.log("Finished populating tables");

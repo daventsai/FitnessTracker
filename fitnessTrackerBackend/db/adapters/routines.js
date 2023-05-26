@@ -238,8 +238,20 @@ async function updateRoutine(routineId, is_public, name, goal){
 
 async function destroyRoutine(routine_id){
     try {
+        await client.query(`
+            DELETE
+            FROM routine_activities
+            WHERE routine_activities.routine_id IN
+                (SELECT id
+                FROM routines
+                WHERE id = $1);
+        `,[routine_id]);
         
-
+        await client.query(`
+            DELETE
+            FROM routines
+            WHERE routines.id = $1;
+        `,[routine_id]);
     } catch (error) {
         console.error('Error destroying routines and related activities');
         throw error;
