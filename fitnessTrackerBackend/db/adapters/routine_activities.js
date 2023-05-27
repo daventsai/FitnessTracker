@@ -14,4 +14,41 @@ async function addActivityToRoutine({routine_id,activity_id,count,duration}){
     }
 }
 
-module.exports={addActivityToRoutine}
+async function getRoutineActivityById(routineActivityId){
+    try {
+        const {rows:[routine_activity]} = await client.query(`
+            SELECT *
+            FROM routine_activities
+            WHERE id=$1;
+        `,[routineActivityId]);
+        return routine_activity;
+    } catch (error) {
+        console.error('Error getting routine_activities by id');
+        throw error;
+    }
+}
+
+async function updateRoutineActivity(routineActivityId,count,duration){
+    try {
+    const setString = Object.keys({count,duration}).map((key,index)=>`"${key}"=$${index+1}`).join(', ');
+    if (setString.length===0){
+        return;
+    }
+    const {rows:[routine_activity]} = await client.query(`
+        UPDATE routine_activities
+        SET ${setString}
+        WHERE id=${routineActivityId}
+        RETURNING *;
+    `,Object.values({count,duration}));
+    return routine_activity;
+    } catch (error) {
+        console.error('Error updating routine_activities');
+        throw error;
+    }
+}
+
+async function getRoutineActivitiesByRoutine(routineId){
+    
+}
+
+module.exports={addActivityToRoutine,getRoutineActivityById,updateRoutineActivity}

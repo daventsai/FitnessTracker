@@ -3,7 +3,7 @@ const {createUser,getUserByUsername,getUser,getUserById} = require('./adapters/u
 const {createActivity,getActivityById,getAllActivities,updateActivity} = require('./adapters/activities');
 const {createRoutine,getRoutineById,getRoutinesWithoutActivities,getAllRoutines,getAllPublicRoutines,
     getAllRoutinesByUser,getPublicRoutinesByUser,getPublicRoutinesByActivity,updateRoutine,destroyRoutine} = require('./adapters/routines');
-const{addActivityToRoutine} = require('./adapters/routine_activities');
+const{addActivityToRoutine,getRoutineActivityById,updateRoutineActivity} = require('./adapters/routine_activities');
 const{
     users,
     activities,
@@ -105,8 +105,13 @@ async function populateTables(){
         console.log("Getting public Routines by Activity", await getPublicRoutinesByActivity(2));
         console.log("Updating routine(2): ", await updateRoutine(2,true,"new Routine Name3","goal3"));
         console.log("Re-getting Routines: ", await getAllRoutines());
+
+        console.log("Getting routineactivity by id(1): ", await getRoutineActivityById(1));
+        console.log("Updating routineactivity by id(1): ", await updateRoutineActivity(1,222,7));
+
         await destroyRoutine(2);
         console.log("Re-re-getting Routines: ", await getAllRoutines());
+
 
         console.log("Finished populating tables");
     }
