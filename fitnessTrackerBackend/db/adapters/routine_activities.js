@@ -48,7 +48,30 @@ async function updateRoutineActivity(routineActivityId,count,duration){
 }
 
 async function getRoutineActivitiesByRoutine(routineId){
-    
+    try {
+        const {rows:routine_activity} = await client.query(`
+            SELECT *
+            FROM routine_activities
+            WHERE routine_id = $1
+        `,[routineId]);
+        return routine_activity;
+    } catch (error) {
+        console.error('Error getting routine_activities by routine');
+        throw error;
+    }
 }
 
-module.exports={addActivityToRoutine,getRoutineActivityById,updateRoutineActivity}
+async function destroyRoutineActivitity(routineActivityId){
+    try {
+        await client.query(`
+            DELETE
+            FROM routine_activities
+            WHERE id=$1
+        `,[routineActivityId]);
+    } catch (error) {
+        console.error('Error destroying routine_activities by id');
+        throw error;
+    }
+}
+
+module.exports={addActivityToRoutine,getRoutineActivityById,updateRoutineActivity,getRoutineActivitiesByRoutine,destroyRoutineActivitity}
