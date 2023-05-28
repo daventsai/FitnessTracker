@@ -26,12 +26,13 @@ async function getUserByUsername(username){
             FROM users
             WHERE username=$1;
         `,[username]);
-        if (!user){
-            throw{
-                name:'UserNotFoundError',
-                message:'A user with that username does not exist'
-            }
-        }
+        // --disabled since it interferes with checking if a username exists when creating a user--
+        // if (!user){
+        //     throw{
+        //         name:'UserNotFoundError',
+        //         message:'A user with that username does not exist'
+        //     }
+        // }
         return user;
     } catch (error) {
         console.error('Error getting username');
