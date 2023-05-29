@@ -1,7 +1,6 @@
 const usersRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
 const {createUser, getUserByUsername, getUser} = require('../db/adapters/users');
-const e = require('express');
 
 const {authRequired} = require('./verify');
 
@@ -80,9 +79,10 @@ usersRouter.get('/me', authRequired,async(req,res,next)=>{
     try {
         const {token} = req.signedCookies;
         //NEED TO SOMEHOW DECODE THE JWT TOKEN SO I CAN ACCESS USERNAME FOR BELOW
+        const parsedToken = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
         if (token){
-            console.log('req body username',req.signedCookies.user);
-            const user = await getUserByUsername(req.signedCookies.user);
+            console.log('parsedToken: ',parsedToken)
+            const user = await getUserByUsername(parsedToken.username);
             res.send({
                 message: 'Getting the user data is successful',
                 user,
