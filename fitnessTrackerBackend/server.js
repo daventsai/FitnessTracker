@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 const PORT = 3000;
 
 const app = express();
@@ -11,6 +12,7 @@ client.connect();
 //middleware
 app.use(express.json());
 app.use(morgan("dev"));
+app.use (cookieParser(process.env.COOKIE_SECRET));
 
 //routes
 app.use("/api",require("./routes"));
