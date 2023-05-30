@@ -71,7 +71,9 @@ async function getAllRoutines(){
             JSON_BUILD_OBJECT(
             'id', activities.id,
             'name', activities.name,
-        'description', activities.description
+        'description', activities.description,
+        'duration', routine_activities.duration,
+        'count', routine_activities.count
             )
         ) END AS activities
         FROM routines
@@ -102,7 +104,9 @@ async function getAllPublicRoutines(){
             JSON_BUILD_OBJECT(
             'id', activities.id,
             'name', activities.name,
-        'description', activities.description
+        'description', activities.description,
+        'duration', routine_activities.duration,
+        'count', routine_activities.count
             )
         ) END AS activities
         FROM routines
@@ -134,7 +138,9 @@ async function getAllRoutinesByUser(username){
             JSON_BUILD_OBJECT(
             'id', activities.id,
             'name', activities.name,
-        'description', activities.description
+        'description', activities.description,
+        'duration', routine_activities.duration,
+        'count', routine_activities.count
             )
         ) END AS activities
         FROM routines
@@ -167,7 +173,9 @@ async function getPublicRoutinesByUser(username){
             JSON_BUILD_OBJECT(
             'id', activities.id,
             'name', activities.name,
-        'description', activities.description
+        'description', activities.description,
+        'duration', routine_activities.duration,
+        'count', routine_activities.count
             )
         ) END AS activities
         FROM routines
@@ -200,7 +208,9 @@ async function getPublicRoutinesByActivity(activityId){
             JSON_BUILD_OBJECT(
             'id', activities.id,
             'name', activities.name,
-        'description', activities.description
+        'description', activities.description,
+        'duration', routine_activities.duration,
+        'count', routine_activities.count
             )
         ) END AS activities
         FROM routines
