@@ -7,7 +7,7 @@ routinesRouter.get('/',async(req,res,next)=>{
     try {
         const routines = await getAllRoutines();
         res.send({
-            message: 'Getting routines and their activities is successful',
+            message: 'Getting Routines and Their Activities is Successful',
             routines
         });
     } catch (error) {
@@ -34,11 +34,20 @@ routinesRouter.patch('/:routineId',authRequired,async(req,res,next)=>{
     try {
         const {routineId} = req.params;
         const {is_public,name,goal} = req.body;
-        const routine = await updateRoutine(routineId,is_public,name,goal);
-        res.send({
-            message: 'Updating Routine Successful',
-            routine
-        })
+        const routine = await getRoutineById(routineId);
+        if (req.user.id === routine.creator_id){
+            const updatedRoutine = await updateRoutine(routineId,is_public,name,goal);
+            res.send({
+                message: 'Updating Routine Successful',
+                updatedRoutine
+            })
+        }
+        else{
+            next({
+                name: 'IdMatchError',
+                message: 'User Id does not match the Creator Id'
+            })
+        }
     } catch (error) {
         next(error);
     }
@@ -46,10 +55,9 @@ routinesRouter.patch('/:routineId',authRequired,async(req,res,next)=>{
 
 routinesRouter.delete('/:routineId',authRequired,async(req,res,next)=>{
     try {
-        const {routineId} = req.params;
-        const userId = req.user.id;
+        const {routineId} = req.params; 
         const routine = await getRoutineById(routineId);
-        if (userId === routine.creator_id){
+        if (req.user.id === routine.creator_id){
             const deletedRoutine = await destroyRoutine(routineId);
             res.send({
                 message: 'Deleting Routine Successful',

@@ -11,5 +11,6 @@ router.get("/health", (req,res,next)=>{
 //need to hook up other routers, ex: router.use('/users', require('./users'))
 router.use('/users',require('./users'));
 router.use('/routines',require('./routines'));
+router.use('/activities',require('./activities'));
 
 module.exports = router;
