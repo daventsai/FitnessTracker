@@ -1,5 +1,5 @@
 const routinesRouter = require('express').Router();
-const {getAllRoutines,createRoutine,destroyRoutine,getRoutineById} = require('../db/adapters/routines');
+const {getAllRoutines,createRoutine,destroyRoutine,getRoutineById,updateRoutine} = require('../db/adapters/routines');
 
 const {authRequired} = require('./verify');
 
@@ -30,18 +30,29 @@ routinesRouter.post('/',authRequired,async(req,res,next)=>{
     }
 });
 
+routinesRouter.patch('/:routineId',authRequired,async(req,res,next)=>{
+    try {
+        const {routineId} = req.params;
+        const {is_public,name,goal} = req.body;
+        const routine = await updateRoutine(routineId,is_public,name,goal);
+        res.send({
+            message: 'Updating Routine Successful',
+            routine
+        })
+    } catch (error) {
+        next(error);
+    }
+});
+
 routinesRouter.delete('/:routineId',authRequired,async(req,res,next)=>{
     try {
         const {routineId} = req.params;
         const userId = req.user.id;
         const routine = await getRoutineById(routineId);
-        const creatorId = routine.creator_id;
-        console.log('routineObj',await getRoutineById(routineId));
-        console.log('user id: '+ userId + ' | creatorId: ' + creatorId);
-        if (userId === creatorId){
+        if (userId === routine.creator_id){
             const deletedRoutine = await destroyRoutine(routineId);
             res.send({
-                message: 'Deleting routine successful',
+                message: 'Deleting Routine Successful',
                 deletedRoutine
             })
         }
