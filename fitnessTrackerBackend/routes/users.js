@@ -79,17 +79,13 @@ usersRouter.post('/login',async (req,res,next)=>{
 usersRouter.get('/me', authRequired,async(req,res,next)=>{
     try {
         const {token} = req.signedCookies;
-        //NEED TO SOMEHOW DECODE THE JWT TOKEN SO I CAN ACCESS USERNAME FOR BELOW
         const parsedToken = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-        if (token){
-            console.log('parsedToken: ',parsedToken)
-            const user = await getUserByUsername(parsedToken.username);
-            res.send({
-                message: 'Getting the user data is successful',
-                user,
-                token
-            });
-        }
+        const user = await getUserByUsername(parsedToken.username);
+        res.send({
+            message: 'Getting the user data is successful',
+            user,
+            token
+        });
     } catch (error) {
         next(error);
     }
