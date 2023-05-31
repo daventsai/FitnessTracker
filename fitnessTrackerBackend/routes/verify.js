@@ -4,7 +4,8 @@ const authRequired = (req,res,next)=>{
     try{
         const token = req.signedCookies.token;
         console.log("Token: ",token);
-        jwt.verify(token,process.env.JWT_SECRET);
+        req.user = jwt.verify(token,process.env.JWT_SECRET);
+        console.log(req.user);
     }
     catch(error){
         res.status(401).send({

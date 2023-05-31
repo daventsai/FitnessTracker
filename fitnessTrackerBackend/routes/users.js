@@ -78,13 +78,10 @@ usersRouter.post('/login',async (req,res,next)=>{
 
 usersRouter.get('/me', authRequired,async(req,res,next)=>{
     try {
-        const {token} = req.signedCookies;
-        const parsedToken = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-        const user = await getUserByUsername(parsedToken.username);
+        const user = await getUserByUsername(req.user.username);
         res.send({
             message: 'Getting the user data is successful',
-            user,
-            token
+            user
         });
     } catch (error) {
         next(error);

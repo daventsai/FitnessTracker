@@ -17,8 +17,8 @@ routinesRouter.get('/',async(req,res,next)=>{
 
 routinesRouter.post('/',authRequired,async(req,res,next)=>{
     try {
-        const {creator_id,is_public,name,goal} = req.body;
-        const routine = await createRoutine({creator_id,is_public,name,goal});
+        const {is_public,name,goal} = req.body;
+        const routine = await createRoutine({creator_id:req.user.id,is_public,name,goal});
         console.log("routine: ", routine);
         res.send({
             message: 'Posting Routine Successful',
@@ -32,16 +32,18 @@ routinesRouter.post('/',authRequired,async(req,res,next)=>{
 
 routinesRouter.delete('/:routineId',authRequired,async(req,res,next)=>{
     try {
-        const {token} = req.signedCookies;
         const {routineId} = req.params;
-        const parsedToken = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-        const userId = parsedToken.id;
+        const userId = req.user.id;
         const routine = await getRoutineById(routineId);
         const creatorId = routine.creator_id;
         console.log('routineObj',await getRoutineById(routineId));
         console.log('user id: '+ userId + ' | creatorId: ' + creatorId);
         if (userId === creatorId){
-            await destroyRoutine(routineId);
+            const deletedRoutine = await destroyRoutine(routineId);
+            res.send({
+                message: 'Deleting routine successful',
+                deletedRoutine
+            })
         }
         else{
             next({
