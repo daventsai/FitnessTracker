@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
 app.use (cookieParser(process.env.COOKIE_SECRET));
+app.use(express.static(path.join(__dirname, './client', 'dist')))
 
 //routes
 app.use("/api",require("./routes"));
