@@ -46,7 +46,7 @@ routinesRouter.patch('/:routineId',authRequired,async(req,res,next)=>{
             next({
                 name: 'IdMatchError',
                 message: 'User Id does not match the Creator Id'
-            })
+            });
         }
     } catch (error) {
         next(error);

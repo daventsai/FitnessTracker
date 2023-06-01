@@ -61,7 +61,7 @@ async function getRoutineActivitiesByRoutine(routineId){
     }
 }
 
-async function destroyRoutineActivitity(routineActivityId){
+async function destroyRoutineActivity(routineActivityId){
     try {
         await client.query(`
             DELETE
@@ -74,4 +74,4 @@ async function destroyRoutineActivitity(routineActivityId){
     }
 }
 
-module.exports={addActivityToRoutine,getRoutineActivityById,updateRoutineActivity,getRoutineActivitiesByRoutine,destroyRoutineActivitity}
+module.exports={addActivityToRoutine,getRoutineActivityById,updateRoutineActivity,getRoutineActivitiesByRoutine,destroyRoutineActivity}

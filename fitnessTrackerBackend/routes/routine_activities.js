@@ -1,5 +1,5 @@
 const routineActivitiesRouter = require('express').Router();
-const {addActivityToRoutine} = require('../db/adapters/routine_activities');
+const {addActivityToRoutine,getRoutineActivityById,updateRoutineActivity,destroyRoutineActivity} = require('../db/adapters/routine_activities');
 const {getRoutineById} = require('../db/adapters/routines');
 const {authRequired} = require('./verify');
 
@@ -34,6 +34,65 @@ routineActivitiesRouter.post('/',async(req,res,next)=>{
 
     } catch (error) {
         next(error);
+    }
+});
+
+routineActivitiesRouter.patch('/:routineActivityId',authRequired,async(req,res,next)=>{
+    try {
+        const {routineActivityId} = req.params;
+        const {count,duration} = req.body;
+        const routineActivity = await getRoutineActivityById(routineActivityId);
+        const routine = await getRoutineById(routineActivity.routine_id);
+        if (req.user.id === routine.creator_id){
+            if (!routineActivity){
+                next({
+                    name: 'IdNotFoundError',
+                    message:'Routine Activity ID was not found'
+                })
+            }
+            else{
+                const updatedRoutineActivity = await updateRoutineActivity(routineActivityId,count,duration);
+                res.send({
+                    message: 'Updating Routine Activity is Successful',
+                    updatedRoutineActivity
+                })
+            }
+        }
+        else{
+            next({
+                name: 'IdMatchError',
+                message: 'User Id does not match the Creator Id'
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
+routineActivitiesRouter.delete('/:routineActivityId',authRequired,async(req,res,next)=>{
+    const {routineActivityId} = req.params;
+    const routineActivity = await getRoutineActivityById(routineActivityId);
+    const routine = await getRoutineById(routineActivity.routine_id);
+    if (req.user.id === routine.creator_id){
+        if (!routineActivity){
+            next({
+                name: 'IdNotFoundError',
+                message:'Routine Activity ID was not found'
+            })
+        }
+        else{
+            const destroyedRoutineActivity = await destroyRoutineActivity(routineActivityId);
+            res.send({
+                message: 'Destroying Routine Activity is Successful',
+                destroyedRoutineActivity
+            })
+        }
+    }
+    else{
+        next({
+            name: 'IdMatchError',
+            message: 'User Id does not match the Creator Id'
+        });
     }
 });
 
