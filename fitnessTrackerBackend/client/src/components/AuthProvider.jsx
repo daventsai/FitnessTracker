@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
     async function getMe() {
       const APIResponse = await fetchMe();
 
-      if (APIResponse.data)
+      if (Object.hasOwnProperty(APIResponse,'data') && APIResponse.data)
       {
         setUser(APIResponse.data);
       }
