@@ -78,11 +78,7 @@ usersRouter.post('/login',async (req,res,next)=>{
 
 usersRouter.get('/me', authRequired,async(req,res,next)=>{
     try {
-        const user = await getUserByUsername(req.user.username);
-        res.send({
-            message: 'Getting the user data is successful',
-            user
-        });
+        res.send(req.user);
     } catch (error) {
         next(error);
     }
