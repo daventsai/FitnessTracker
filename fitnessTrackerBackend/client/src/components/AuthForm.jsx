@@ -18,20 +18,25 @@ export default function AuthForm(){
             let result;
             if (pathname==='/register'){
                 result = await registerUser(username, password);
+                if (result.user){
+                    nav('/login');
+                }
+                else{
+                    console.log(result);
+                    setError('Error creating a user: ' + result.message);
+                }
             }
             else{
                 result = await loginUser(username, password);
-                console.log('result',result)
                 if (result.user){
                     setLoggedIn(true);
                     setUser(result.user);
                     nav('/');
                 }
+                else{
+                    setError('Error logging in: '+result.message);
+                }
             }
-            console.log('result: ',result)
-
-
-            
         } catch (error) {
             console.log('Error on registering submission: ',error);
         }
@@ -57,6 +62,7 @@ export default function AuthForm(){
                         <input type='text' name='password' placeholder='password' onChange={(e)=>setPassword(e.target.value)}/>
                     </div>
                     <button>Submit</button>
+                    {error?<p style={{color: "red"}}>{error}</p>:null}  
                     <Link to='/'>Return to Login Page</Link>
                 </form>
         </div>
