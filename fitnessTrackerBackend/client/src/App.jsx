@@ -2,7 +2,7 @@ import {Routes, Route} from "react-router-dom"
 import './App.css'
 
 import Home from "./components/Home";
-import RegisterForm from './components/RegisterForm';
+import AuthForm from './components/AuthForm';
 
 function App() {
 
@@ -11,7 +11,8 @@ function App() {
       <h1>Fitness Tracker</h1>
       <Routes>
         <Route path="/" element={<Home/>}/>
-        <Route path="/register" element={<RegisterForm/>}/>
+        <Route path="/register" element={<AuthForm/>}/>
+        <Route path="/login" element={<AuthForm/>}/>
       </Routes>
     </div>
   )
