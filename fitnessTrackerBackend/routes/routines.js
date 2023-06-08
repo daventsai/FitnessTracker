@@ -1,5 +1,5 @@
 const routinesRouter = require('express').Router();
-const {getAllRoutines,createRoutine,destroyRoutine,getRoutineById,updateRoutine} = require('../db/adapters/routines');
+const {getAllRoutines,createRoutine,destroyRoutine,getRoutineById,updateRoutine,getAllPublicRoutines} = require('../db/adapters/routines');
 
 const {authRequired} = require('./verify');
 
@@ -8,6 +8,18 @@ routinesRouter.get('/',async(req,res,next)=>{
         const routines = await getAllRoutines();
         res.send({
             message: 'Getting Routines and Their Activities is Successful',
+            routines
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+routinesRouter.get('/public',async(req,res,next)=>{
+    try {
+        const routines = await getAllPublicRoutines();
+        res.send({
+            message: 'Getting Public Routines and Their Activities is Successful',
             routines
         });
     } catch (error) {

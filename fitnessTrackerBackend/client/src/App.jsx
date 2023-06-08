@@ -3,6 +3,7 @@ import './App.css'
 
 import Home from "./components/Home";
 import AuthForm from './components/AuthForm';
+import PublicRoutines from './components/PublicRoutines'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/register" element={<AuthForm/>}/>
         <Route path="/login" element={<AuthForm/>}/>
+        <Route path="/routines/public" element={<PublicRoutines/>}/>
       </Routes>
     </div>
   )

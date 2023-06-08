@@ -21,6 +21,9 @@ export default function Header(){
             ?
             <div>
                 <button onClick={()=>nav('/')}>Home</button>
+                <button onClick={()=>nav('/routines/public')}>Routines</button>
+                <button onClick={()=>nav('/routines')}>My Routines</button>
+                <button onClick={()=>nav('/activities')}>Activities</button>
                 <button onClick={handleLogout}>Logout</button>
             </div>
             :
@@ -37,6 +40,8 @@ export default function Header(){
                     }
                 </div>
                 <button onClick={()=>nav('/')}>Home</button>
+                <button onClick={()=>nav('/routines/public')}>Routines</button>
+                <button onClick={()=>nav('/activities')}>Activities</button>
             </div>
             }
         </header>

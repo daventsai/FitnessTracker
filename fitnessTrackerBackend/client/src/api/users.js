@@ -44,7 +44,6 @@ export async function fetchMe() {
             },
         });
         const result  = await response.json();
-        console.log('console result: ',result)
         return result;
     } catch (error) {
         console.log('Error getting user: ', error)
