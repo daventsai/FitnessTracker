@@ -50,9 +50,23 @@ export async function fetchMe() {
     }
 }
 
+export async function fetchUser(creator_id) {
+    try {
+        const response = await fetch(`/api/users/id/${creator_id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+        const result  = await response.json();
+        return result;
+    } catch (error) {
+        console.log('Error getting user: ', error)
+    }
+}
+
 export async function fetchUserRoutines(username){
     try {
-        const response = await fetch(`/api/${username}/routines`, {
+        const response = await fetch(`/api/users/${username}/routines`, {
             headers: {
                 "Content-Type": "application/json",
             },

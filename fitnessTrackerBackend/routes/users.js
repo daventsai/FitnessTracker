@@ -1,6 +1,6 @@
 const usersRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
-const {createUser, getUserByUsername, getUser} = require('../db/adapters/users');
+const {createUser, getUserByUsername, getUser, getUserById} = require('../db/adapters/users');
 const {getPublicRoutinesByUser} = require('../db/adapters/routines');
 
 const {authRequired} = require('./verify');
@@ -90,6 +90,19 @@ usersRouter.get('/:username/routines',async(req,res,next)=>{
         const routine = await getPublicRoutinesByUser(username);
         res.send({
             message: `Getting ${username}'s public routines is successful`,
+            routine
+        });
+    } catch (error) {
+        next(error);
+    }
+})
+
+usersRouter.get('/id/:creator_id',async(req,res,next)=>{
+    const { creator_id } = req.params;
+    try {
+        const routine = await getUserById(creator_id);
+        res.send({
+            message: `Getting user by Id is successful`,
             routine
         });
     } catch (error) {
