@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+
+.myRoutines{
+  display: flex;
+}
+.routines{
+  min-width:25rem;
+}
