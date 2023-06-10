@@ -4,6 +4,7 @@ import './App.css'
 import Home from "./components/Home";
 import AuthForm from './components/AuthForm';
 import PublicRoutines from './components/PublicRoutines'
+import MyRoutines from "./components/MyRoutines";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<AuthForm/>}/>
         <Route path="/login" element={<AuthForm/>}/>
         <Route path="/routines/public" element={<PublicRoutines/>}/>
+        <Route path="/routines/" element={<MyRoutines/>}/>
       </Routes>
     </div>
   )

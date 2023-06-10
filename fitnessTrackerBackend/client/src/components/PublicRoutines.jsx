@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {Link, useNavigate, useLocation} from 'react-router-dom';
-import useAuth from "../hooks/useAuth";
 import Header from "./Header";
 import {fetchPublicRoutines} from "../api/routines"
 import { fetchUser } from "../api/users";
