@@ -23,7 +23,6 @@ export default function MyRoutines(){
     let routineDisplay;
     if (routines.routines){
         routineDisplay = routineName.length ? routines.routines.filter((r)=>(r.creator_id===user.id && r.name.toLowerCase().includes(routineName.toLowerCase()))) : routines.routines.filter((r)=>(r.creator_id===user.id));
-        console.log(routines)
     }
 
     return(
@@ -52,7 +51,7 @@ export default function MyRoutines(){
                                         <p>Created By: {routine.creator_id}</p>
                                         {routine.activities.map((activity)=>{
                                             return(
-                                                <div style={{border: '1px dotted white', margin: '3px'}}>
+                                                <div style={{border: '1px dotted teal', margin: '3px'}}>
                                                     <h5>Activity: {activity.name}</h5>
                                                     <h6>Description: {activity.description}</h6>
                                                     <h6>Duration:{activity.duration}</h6>

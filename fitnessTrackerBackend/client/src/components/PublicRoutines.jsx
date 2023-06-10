@@ -11,10 +11,11 @@ export default function PublicRoutines(){
     useEffect(()=>{
         async function getPublicRoutines(){
             setRoutines(await fetchPublicRoutines());
-            // ------------ MY ATTEMPTS AT GETTING THE USERNAME ONTO THE ROUTINES, BUT IT DID NOT WORK ----------
-            // if(routines)
+            //------------ MY ATTEMPTS AT GETTING THE USERNAME ONTO THE ROUTINES, BUT IT DID NOT WORK ----------
+            // if(routines.routines)
             //     for (let i=0;i<routines.routines.length;i++){
-            //         setRoutines({...routines,user:setUsername(await fetchUser(routines.routines[i].creator_id))});
+            //         setRoutines({...routines,'user':setUsername(await fetchUser(routines.routines[i].creator_id))});
+            //         console.log(routines);
             //     }
         }
         getPublicRoutines();
@@ -22,7 +23,6 @@ export default function PublicRoutines(){
 
 
     const routineDisplay = routineName.length ? routines.routines.filter((r)=>r.name.toLowerCase().includes(routineName.toLowerCase())) : routines.routines;
-    console.log(routineDisplay);
 
 
     return(
@@ -45,7 +45,7 @@ export default function PublicRoutines(){
                                         <p>Created By: {routine.creator_id}</p>
                                         {routine.activities.map((activity)=>{
                                             return(
-                                                <div style={{border: '1px dotted white', margin: '3px'}}>
+                                                <div style={{border: '1px dotted teal', margin: '3px'}}>
                                                     <h5>Activity: {activity.name}</h5>
                                                     <h6>Description: {activity.description}</h6>
                                                     <h6>Duration:{activity.duration}</h6>

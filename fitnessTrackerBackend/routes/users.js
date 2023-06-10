@@ -100,10 +100,10 @@ usersRouter.get('/:username/routines',async(req,res,next)=>{
 usersRouter.get('/id/:creator_id',async(req,res,next)=>{
     const { creator_id } = req.params;
     try {
-        const routine = await getUserById(creator_id);
+        const user = await getUserById(creator_id);
         res.send({
             message: `Getting user by Id is successful`,
-            routine
+            user
         });
     } catch (error) {
         next(error);
