@@ -165,7 +165,7 @@ export default function MyRoutines(){
                             }
                             </div>
                         </div>
-                        <div style={{border:'3px solid white',margin:'5px'}}>
+                        <div style={{border:'3px solid skyblue',margin:'5px'}}>
                             { editRoutineState !== true
                             ?
                             <div>
