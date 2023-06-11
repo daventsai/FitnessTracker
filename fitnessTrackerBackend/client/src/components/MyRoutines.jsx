@@ -3,7 +3,7 @@ import useAuth from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import { fetchRoutines,createRoutine,updateRoutine,deleteRoutine } from "../api/routines";
 import Header from "./Header";
-import { deleteRoutineActivity } from "../api/routine_activities";
+import { addActivity, deleteRoutineActivity } from "../api/routine_activities";
 
 export default function MyRoutines(){
     const nav = useNavigate();
@@ -16,10 +16,15 @@ export default function MyRoutines(){
     const [submitted,setSubmitted] = useState(false);
     const [deleted,setDeleted] = useState(false);
     const [editRoutineState,setEditRoutineState] = useState(false);
+    const [addActivityState,setAddActivityState]=useState(false);
     const [tempEditName,setTempEditName] = useState('');
     const [tempIsPublic,setTempIsPublic]=useState(false);
     const [tempEditGoal,setTempEditGoal] = useState('');
     const [tempEditRoutineId,setTempEditRoutineId] = useState('');
+    const [count,setCount] = useState('');
+    const [duration,setDuration] = useState('');
+    const [routineId,setRoutineId]=useState('');
+    const [activityId,setActivityId]=useState('');
 
     useEffect(()=>{
         async function getMyRoutines(){
@@ -71,6 +76,16 @@ export default function MyRoutines(){
             console.log('Error updating routine',error);
         }
     }
+    async function handleAddActivitySubmit(e){
+        e.preventDefault();
+        try {
+            const result = await addActivity(routineId,activityId,count,duration)
+            setSubmitted(true);
+            console.log('adding activity result',result)
+        } catch (error) {
+            console.log('Error adding activity',error);
+        }
+    }
 
     async function deleteR(r){
         try {
@@ -117,9 +132,9 @@ export default function MyRoutines(){
                                             <div style={{border: '3px solid white', margin: '5px'}}>
                                                 <div>
                                                     <div>
-                                                            <button onClick={()=>{setEditRoutineState(!editRoutineState),setTempEditName(routine.name),setTempEditGoal(routine.goal),setTempEditRoutineId(routine.id),setTempIsPublic(routine.is_public)}}>Edit Routine</button>
+                                                            <button onClick={()=>{setEditRoutineState(!editRoutineState),setAddActivityState(false),setTempEditName(routine.name),setTempEditGoal(routine.goal),setTempEditRoutineId(routine.id),setTempIsPublic(routine.is_public)}}>Edit Routine</button>
                                                             <button onClick={()=>deleteR(routine)}>Delete Routine</button>
-                                                            <button>Add New Activity</button>
+                                                            <button onClick={()=>{setAddActivityState(!addActivityState),setEditRoutineState(false),setRoutineId(routine.id)}}>Add New Activity</button>
                                                     </div>
                                                     <h3>Name: {routine.name}</h3>
                                                     <p>Goal: {routine.goal}</p>
@@ -154,16 +169,32 @@ export default function MyRoutines(){
                             { editRoutineState !== true
                             ?
                             <div>
-                                <h2>Create new Routine</h2>
+                                {addActivityState!==true
+                                ?
                                 <div>
-                                    <form onSubmit={handleSubmit}>
-                                        <p><input type='text' name='name' placeholder='routine name' value={name} onChange={(e)=>setName(e.target.value)}/></p>
-                                        <p><input type='text' name='goal' placeholder='goal' value={goal} onChange={(e)=>setGoal(e.target.value)}/></p>
-                                        <p>Public?<input type='checkbox' className='isPublic' name='isPublic' onChange={(e)=>setIsPublic(e.target.checked?true:false)}/></p>
-                                        <button>Submit</button>
-                                    </form>
+                                    <h2>Create new Routine</h2>
+                                    <div>
+                                        <form onSubmit={handleSubmit}>
+                                            <p><input type='text' name='name' placeholder='routine name' value={name} onChange={(e)=>setName(e.target.value)}/></p>
+                                            <p><input type='text' name='goal' placeholder='goal' value={goal} onChange={(e)=>setGoal(e.target.value)}/></p>
+                                            <p>Public?<input type='checkbox' className='isPublic' name='isPublic' onChange={(e)=>setIsPublic(e.target.checked?true:false)}/></p>
+                                            <button>Submit</button>
+                                        </form>
+                                    </div>
                                 </div>
+                                :
+                                    <div>
+                                        <h2>Add new Activity</h2>
+                                        <form onSubmit={handleAddActivitySubmit}>
+                                            <p>temporary activity id: <input type='text' name='activity id' placeholder='activityid' value={activityId} onChange={(e)=>setActivityId(e.target.value)}/></p>
+                                            <p>Count: <input type='text' name='count' placeholder='count' value={count} onChange={(e)=>setCount(e.target.value)}/></p>
+                                            <p>Duration: <input type='text' name='duration' placeholder='duration' value={duration} onChange={(e)=>setDuration(e.target.value)}/></p>
+                                            <button>Submit</button>
+                                        </form>
+                                    </div>    
+                                }
                             </div>
+                            
                             :
                             <div>
                                 <div>
