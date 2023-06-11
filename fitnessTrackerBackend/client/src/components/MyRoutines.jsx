@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import { fetchRoutines,createRoutine,updateRoutine,deleteRoutine } from "../api/routines";
 import Header from "./Header";
+import { deleteRoutineActivity } from "../api/routine_activities";
 
 export default function MyRoutines(){
     const nav = useNavigate();
@@ -71,9 +72,18 @@ export default function MyRoutines(){
         }
     }
 
-    async function deleteR(e){
+    async function deleteR(r){
         try {
-            const result = await deleteRoutine(e.id);
+            const result = await deleteRoutine(r.id);
+            setDeleted(true);
+            console.log('deleted routine result',result); 
+        } catch (error) {
+            console.log('Error deleting routine',error);
+        }
+    }
+    async function deleteA(a){
+        try {
+            const result = deleteRoutineActivity(a.routine_activities);
             setDeleted(true);
             console.log('deleted routine result',result); 
         } catch (error) {
@@ -81,6 +91,7 @@ export default function MyRoutines(){
         }
     }
 
+    console.log(routineDisplay)
     return(
         <div>
             {
@@ -117,6 +128,10 @@ export default function MyRoutines(){
                                                         return(
                                                             <div>
                                                                 <div style={{border: '1px dotted teal', margin: '2px'}}>
+                                                                    <div>
+                                                                        <button>Edit Activity</button>
+                                                                        <button onClick={()=>deleteA(activity)}>Delete Activity</button>
+                                                                    </div>
                                                                     <h5>Activity: {activity.name}</h5>
                                                                     <h6>Description: {activity.description}</h6>
                                                                     <h6>Duration:{activity.duration}</h6>

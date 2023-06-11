@@ -73,7 +73,8 @@ async function getAllRoutines(){
             'name', activities.name,
         'description', activities.description,
         'duration', routine_activities.duration,
-        'count', routine_activities.count
+        'count', routine_activities.count,
+        'routine_activities',routine_activities.id
             )
         ) END AS activities
         FROM routines
@@ -106,7 +107,8 @@ async function getAllPublicRoutines(){
             'name', activities.name,
         'description', activities.description,
         'duration', routine_activities.duration,
-        'count', routine_activities.count
+        'count', routine_activities.count,
+        'routine_activities',routine_activities.id
             )
         ) END AS activities
         FROM routines
@@ -140,7 +142,8 @@ async function getAllRoutinesByUser(username){
             'name', activities.name,
         'description', activities.description,
         'duration', routine_activities.duration,
-        'count', routine_activities.count
+        'count', routine_activities.count,
+        'routine_activities',routine_activities.id
             )
         ) END AS activities
         FROM routines
@@ -175,7 +178,8 @@ async function getPublicRoutinesByUser(username){
             'name', activities.name,
         'description', activities.description,
         'duration', routine_activities.duration,
-        'count', routine_activities.count
+        'count', routine_activities.count,
+        'routine_activities',routine_activities.id
             )
         ) END AS activities
         FROM routines
@@ -210,7 +214,8 @@ async function getPublicRoutinesByActivity(activityId){
             'name', activities.name,
         'description', activities.description,
         'duration', routine_activities.duration,
-        'count', routine_activities.count
+        'count', routine_activities.count,
+        'routine_activities',routine_activities.id
             )
         ) END AS activities
         FROM routines
