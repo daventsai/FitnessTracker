@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { fetchRoutines,createRoutine,updateRoutine,deleteRoutine } from "../api/routines";
 import Header from "./Header";
 import { addActivity, deleteRoutineActivity } from "../api/routine_activities";
+import { fetchActivities } from "../api/activities";
 
 export default function MyRoutines(){
     const nav = useNavigate();
@@ -24,12 +25,14 @@ export default function MyRoutines(){
     const [count,setCount] = useState('');
     const [duration,setDuration] = useState('');
     const [routineId,setRoutineId]=useState('');
-    const [activityId,setActivityId]=useState('');
+    const [activities,setActivities]=useState([]);
+    const [optionsState,setOptionsState]=useState('');
 
     useEffect(()=>{
         async function getMyRoutines(){
             if (loggedIn === true){
                 setRoutines(await fetchRoutines());
+                setActivities(await fetchActivities());
                 if (submitted){
                     setSubmitted(false);
                 }
@@ -79,7 +82,11 @@ export default function MyRoutines(){
     async function handleAddActivitySubmit(e){
         e.preventDefault();
         try {
-            const result = await addActivity(routineId,activityId,count,duration)
+            const result = await addActivity(routineId,optionsState,count,duration)
+
+            setCount('');
+            setDuration('');
+
             setSubmitted(true);
             console.log('adding activity result',result)
         } catch (error) {
@@ -106,7 +113,6 @@ export default function MyRoutines(){
         }
     }
 
-    console.log(routineDisplay)
     return(
         <div>
             {
@@ -186,7 +192,14 @@ export default function MyRoutines(){
                                     <div>
                                         <h2>Add new Activity</h2>
                                         <form onSubmit={handleAddActivitySubmit}>
-                                            <p>temporary activity id: <input type='text' name='activity id' placeholder='activityid' value={activityId} onChange={(e)=>setActivityId(e.target.value)}/></p>
+                                            <select value={optionsState} onChange={(e)=>setOptionsState(e.target.value)}>
+                                                <div></div>
+                                                {activities.activities.map((a)=>{
+                                                    return(
+                                                        <option value={a.id}>{a.name}</option>
+                                                    )
+                                                })}
+                                            </select>
                                             <p>Count: <input type='text' name='count' placeholder='count' value={count} onChange={(e)=>setCount(e.target.value)}/></p>
                                             <p>Duration: <input type='text' name='duration' placeholder='duration' value={duration} onChange={(e)=>setDuration(e.target.value)}/></p>
                                             <button>Submit</button>
@@ -194,7 +207,6 @@ export default function MyRoutines(){
                                     </div>    
                                 }
                             </div>
-                            
                             :
                             <div>
                                 <div>
