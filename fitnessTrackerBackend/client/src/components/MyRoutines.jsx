@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react";
 import useAuth from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
-import { fetchRoutines,createRoutine,updateRoutine } from "../api/routines";
+import { fetchRoutines,createRoutine,updateRoutine,deleteRoutine } from "../api/routines";
 import Header from "./Header";
 
 export default function MyRoutines(){
@@ -13,6 +13,7 @@ export default function MyRoutines(){
     const [name,setName] = useState('');
     const [goal,setGoal] = useState('');
     const [submitted,setSubmitted] = useState(false);
+    const [deleted,setDeleted] = useState(false);
     const [editRoutineState,setEditRoutineState] = useState(false);
     const [tempEditName,setTempEditName] = useState('');
     const [tempIsPublic,setTempIsPublic]=useState(false);
@@ -26,13 +27,16 @@ export default function MyRoutines(){
                 if (submitted){
                     setSubmitted(false);
                 }
+                if (deleted){
+                    setDeleted(false);
+                }
             }
             else{
                 nav('/');
             }
         }
         getMyRoutines();
-    },[submitted])
+    },[submitted,deleted])
     let routineDisplay;
     if (routines.routines){
         routineDisplay = routineName.length ? routines.routines.filter((r)=>(r.creator_id===user.id && r.name.toLowerCase().includes(routineName.toLowerCase()))) : routines.routines.filter((r)=>(r.creator_id===user.id));
@@ -59,10 +63,21 @@ export default function MyRoutines(){
         e.preventDefault();
         try {
             const result = await updateRoutine(tempEditRoutineId,tempIsPublic,tempEditName,tempEditGoal);
+            console.log(tempEditRoutineId,tempIsPublic,tempEditName,tempEditGoal)
             setSubmitted(true);
             console.log('updating routine result',result);
         } catch (error) {
             console.log('Error updating routine',error);
+        }
+    }
+
+    async function deleteR(e){
+        try {
+            const result = await deleteRoutine(e.id);
+            setDeleted(true);
+            console.log('deleted routine result',result); 
+        } catch (error) {
+            console.log('Error deleting routine',error);
         }
     }
 
@@ -92,7 +107,7 @@ export default function MyRoutines(){
                                                 <div>
                                                     <div>
                                                             <button onClick={()=>{setEditRoutineState(!editRoutineState),setTempEditName(routine.name),setTempEditGoal(routine.goal),setTempEditRoutineId(routine.id),setTempIsPublic(routine.is_public)}}>Edit Routine</button>
-                                                            <button>Delete Routine</button>
+                                                            <button onClick={()=>deleteR(routine)}>Delete Routine</button>
                                                             <button>Add New Activity</button>
                                                     </div>
                                                     <h3>Name: {routine.name}</h3>
@@ -140,6 +155,12 @@ export default function MyRoutines(){
                                     <form onSubmit={handleRoutineEditSubmit}>
                                         <h2>Edit Routine</h2>
                                         <button>Submit</button>
+                                        <p>By all accounts... this should work. idk why it isn't. Code looks all fine, looking
+                                            at the terminal, idk why it thinks it's null. I console logged alll the values and it passes
+                                            everything fine. Same with the backend, it should work since all the seeddata is correct.
+                                            If you can tell me what's wrong or if it's like a niche error, that'd be great since I spent 4hrs
+                                            trying to get this to work.
+                                        </p>
                                         <p>Name: <input type='text' defaultValue={tempEditName} onChange={(e)=>setTempEditName(e.target.value)}/></p>
                                         <p>Goal: <input type='text' defaultValue={tempEditGoal} onChange={(e)=>setTempEditGoal(e.target.value)}/></p>
                                     </form>

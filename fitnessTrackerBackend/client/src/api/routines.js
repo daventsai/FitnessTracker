@@ -63,10 +63,24 @@ export async function updateRoutine(id,is_public,name,goal){
             })
         });
         const result=await response.json();
-        console.log(result);
         return result;
     }
     catch(error){
-        console.error('Error patching routine',error)
+        console.log('Error patching routine',error)
+    }
+}
+
+export async function deleteRoutine(id){
+    try {
+        const response = await fetch(`/api/routines/${id}`,{
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.log('Error deleting a post: ',error)
     }
 }
