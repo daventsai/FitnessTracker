@@ -46,3 +46,27 @@ export async function createRoutine(is_public,name,goal){
         console.log('Error creating activities: ', error)
     }
 }
+
+export async function updateRoutine(id,is_public,name,goal){
+    try{
+        const response = await fetch(`/api/routines/${id}`,{
+            method: "PATCH",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                post:{
+                    is_public,
+                    name,
+                    goal
+                }
+            })
+        });
+        const result=await response.json();
+        console.log(result);
+        return result;
+    }
+    catch(error){
+        console.error('Error patching routine',error)
+    }
+}
